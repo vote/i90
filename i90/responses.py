@@ -93,7 +93,7 @@ class responses:
     def redirect_created(result):
         # We let this blow up on a key error because it should never happen.
         token = result["token"]
-        short_url = urljoin(f"{config.protocol}://{config.host}", f"x/{token}")
+        short_url = urljoin(f"{config.protocol}://{config.host}", f"{token}")
 
         result.update({"short_url": short_url})
 

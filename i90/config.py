@@ -35,7 +35,7 @@ class Config:
 
     @cached_property
     def catchall_redirect(self):
-        return environ.get("CATCHALL_REDIRECT", "https://elizabethwarren.com/")
+        return environ.get("CATCHALL_REDIRECT", "https://www.voteamerica.com/?source=go&utm_campaign=go")
 
 
     @cached_property
