@@ -61,6 +61,10 @@ class Api:
                 if key in ALIASED_PARAMS:
                     params[ALIASED_PARAMS[key]] = params.pop(key)
             destination = urls.append_query_params(destination, params)
+            # update tracker dimensions to include the parameters that were passed
+            # through from the short url
+            new_dimensions = urls.extract_dimensions(destination)
+            data.update({f"dimensions_{k}": v for k, v in new_dimensions.items()})
 
         self.tracker.record_redirect_success(
             token=token, destination=destination, redirect=data, **kwargs
