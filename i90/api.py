@@ -7,6 +7,12 @@ from i90.responses import responses
 from i90.track import Tracker
 from i90.urls import urls
 
+# These aliases apply to parameters that are "passed through" from the short url
+# to the long url.
+ALIASED_PARAMS = {
+    "c": "utm_content"
+}
+
 
 class Api:
     """Container for api responses"""
@@ -50,7 +56,11 @@ class Api:
             return responses.not_found()  # Early Return
 
         if kwargs.get("additional_params"):
-            destination = urls.append_query_params(destination, kwargs["additional_params"])
+            params = kwargs["additional_params"]
+            for key in params.keys():
+                if key in ALIASED_PARAMS:
+                    params[ALIASED_PARAMS[key]] = params.pop(key)
+            destination = urls.append_query_params(destination, params)
 
         self.tracker.record_redirect_success(
             token=token, destination=destination, redirect=data, **kwargs
