@@ -5,6 +5,7 @@ import logging
 from i90.redirects import Redirects
 from i90.responses import responses
 from i90.track import Tracker
+from i90.urls import urls
 
 
 class Api:
@@ -48,9 +49,13 @@ class Api:
             self.tracker.record_destination_missing(token=token, **kwargs)
             return responses.not_found()  # Early Return
 
+        if kwargs.get("additional_params"):
+            destination = urls.append_query_params(destination, kwargs["additional_params"])
+
         self.tracker.record_redirect_success(
             token=token, destination=destination, redirect=data, **kwargs
         )
+
         return responses.redirect(destination)
 
     def claim(self, token, destination, **kwargs):

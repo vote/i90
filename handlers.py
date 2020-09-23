@@ -23,8 +23,9 @@ def redirect(event, *args, **kwargs):
         return
 
     params = event.get("pathParameters", {})
+    additional_params = event.get("queryStringParameters")
     token = params.get("token", "").strip()
-    return api.redirect(token, event=event)
+    return api.redirect(token, event=event, additional_params=additional_params)
 
 
 def claim(event, *args, **kwargs):
