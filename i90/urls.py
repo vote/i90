@@ -1,6 +1,8 @@
 # i90/urls.py
 
-from urllib.parse import parse_qs, urlparse
+from urllib.parse import (
+    urlencode, unquote, urlparse, parse_qsl, parse_qs, ParseResult
+)
 
 import validators
 
@@ -31,3 +33,11 @@ class urls:
         dimensions.update(params)
         dimensions = {k: v for k, v in dimensions.items() if v}
         return dimensions
+
+    @staticmethod
+    def append_query_params(destination, additional_params):
+        parsed_dest = urlparse(unquote(destination))
+        query_dict = dict(parse_qsl(parsed_dest.query))
+        query_dict.update(additional_params)
+        return parsed_dest._replace(query=urlencode(query_dict)).geturl()
+

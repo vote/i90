@@ -41,3 +41,8 @@ def test_extract_dimensions():
     )
     assert dimensions["query_zip5_0"] == "02145"
     assert dimensions["query_zip5_1"] == "12345"
+
+
+def test_append_query_params():
+    assert urls.append_query_params("https://www.example.com/", {"utm_source": "foo"}) == "https://www.example.com/?utm_source=foo"
+    assert urls.append_query_params("https://www.example.com/?utm_source=foo", {"utm_content": "bar"}) == "https://www.example.com/?utm_source=foo&utm_content=bar"

@@ -5,6 +5,13 @@ import logging
 from i90.redirects import Redirects
 from i90.responses import responses
 from i90.track import Tracker
+from i90.urls import urls
+
+# These aliases apply to parameters that are "passed through" from the short url
+# to the long url.
+ALIASED_PARAMS = {
+    "c": "utm_content"
+}
 
 
 class Api:
@@ -48,9 +55,21 @@ class Api:
             self.tracker.record_destination_missing(token=token, **kwargs)
             return responses.not_found()  # Early Return
 
+        if kwargs.get("additional_params"):
+            params = kwargs["additional_params"]
+            for key in params.keys():
+                if key in ALIASED_PARAMS:
+                    params[ALIASED_PARAMS[key]] = params.pop(key)
+            destination = urls.append_query_params(destination, params)
+            # update tracker dimensions to include the parameters that were passed
+            # through from the short url
+            new_dimensions = urls.extract_dimensions(destination)
+            data.update({f"dimensions_{k}": v for k, v in new_dimensions.items()})
+
         self.tracker.record_redirect_success(
             token=token, destination=destination, redirect=data, **kwargs
         )
+
         return responses.redirect(destination)
 
     def claim(self, token, destination, **kwargs):
