@@ -82,6 +82,9 @@ functions:
     events:
       - http:
           method: GET
+          path: /
+      - http:
+          method: GET
           path: /{token}
       - schedule:
           rate: rate(4 minutes)

@@ -24,7 +24,9 @@ def redirect(event, *args, **kwargs):
 
     params = event.get("pathParameters", {})
     additional_params = event.get("queryStringParameters")
-    token = params.get("token", "").strip()
+    token = None
+    if params:
+        token = params.get("token", "").strip()
     return api.redirect(token, event=event, additional_params=additional_params)
 
 
