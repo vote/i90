@@ -22,9 +22,11 @@ To deploy the code
 
     sls deploy --stage <your stage>
 
+Note: The versions you are running locally of Node and pipenv are relevant here. The deployment command should succeed with version 14.21.3 of Node and 2022.5.2 of pipenv.
+
 ## API
 
-Authentication to the API is mediated using API keys on the API Gateway fronting this application. You can find API keys by visiting [this page](https://console.aws.amazon.com/apigateway/home?region=us-east-1#/api-keys) and finding one associated with `i90`. You can also create a new API key on that page. YOu will need to associate that key with the `i90` API with which you'll communicate. If you have any questions about this process, please reach out to @pjstein on slack.
+Authentication to the API is mediated using API keys on the API Gateway fronting this application. You can find API keys by visiting [this page](https://console.aws.amazon.com/apigateway/home?region=us-east-1#/api-keys) and finding one associated with `i90`. You can also create a new API key on that page. YOu will need to associate that key with the `i90` API with which you'll communicate. 
 
 These API keys are passed to `i90` as the `x-api-key` header.
 
