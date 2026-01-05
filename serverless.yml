@@ -34,8 +34,9 @@ provider:
   deploymentBucket:
     name: ${self:custom.deploy.bucket_name}
     blockPublicAccess: true
-  apiKeys:
-    - ${self:custom.stage}-i90-default
+  apiGateway:
+    apiKeys:
+      - ${self:custom.stage}-i90-default
   iamRoleStatements:
     - Effect: Allow
       Action:
