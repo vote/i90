@@ -1,12 +1,12 @@
 service: i90
 
-frameworkVersion: ">=1.1.0 <2.0.0"
+frameworkVersion: "^3.40.0"
 
 custom:
   stage: ${opt:stage, env:STAGE, "dev"}
 
   deploy:
-    bucket_name: ${ssm:/i90/DEPLOYMENT_BUCKET_NAME~true}
+    bucket_name: ${ssm:/i90/DEPLOYMENT_BUCKET_NAME}
 
   pythonRequirements:
     dockerizePip: true
@@ -19,29 +19,12 @@ custom:
     STAGE: ${self:custom.stage}
     MY_PROTOCOL: https
     TOKEN_BYTE_LENGTH: 10
-    MY_HOST: "${ssm:/i90/${self:custom.stage}/HOST~true}"
-    REDIRECTS_TABLE: "${ssm:/i90/${self:custom.stage}/redirects_table/name~true}"
-    TRACKING_STREAM: "${ssm:/i90/${self:custom.stage}/kinesis_firehose/name~true}"
+    MY_HOST: "${ssm:/i90/${self:custom.stage}/HOST}"
+    REDIRECTS_TABLE: "${ssm:/i90/${self:custom.stage}/redirects_table/name}"
+    TRACKING_STREAM: "${ssm:/i90/${self:custom.stage}/kinesis_firehose/name}"
 
   layers:
     - {Ref: PythonRequirementsLambdaLayer}
-
-#  TODO
-#  alerts:
-#    nameTemplate: $[functionName]-$[metricName]-Alarm
-#    topics:
-#      alarm:
-#        topic: ${ssm:/${self:custom.stage}/sns/alarms/name~true}
-#    definitions:
-#      functionInvocations:
-#        threshold: 5000
-#      functionDuration:
-#        threshold: 1000
-#    alarms:
-#      - functionThrottles
-#      - functionErrors
-#      - functionInvocations
-#      - functionDuration
 
 provider:
   name: aws
@@ -58,12 +41,12 @@ provider:
       Action:
         - "dynamodb:*"
       Resource:
-        - "${ssm:/i90/${self:custom.stage}/redirects_table/arn~true}"
+        - "${ssm:/i90/${self:custom.stage}/redirects_table/arn}"
     - Effect: Allow
       Action:
         - "firehose:PutRecord"
       Resource:
-        - "${ssm:/i90/${self:custom.stage}/kinesis_firehose/arn~true}"
+        - "${ssm:/i90/${self:custom.stage}/kinesis_firehose/arn}"
   environment: ${self:custom.environment}
 
 package:
