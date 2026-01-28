@@ -7,7 +7,7 @@ Data in Redshift is stored as JSON in a single column called `__raw`. This JSON 
 ## Installation
 
     pipenv install -d
-    npm install -g serverless@3.40.0
+    npm install -g serverless@4.31.2
     npm install
 
 ## Deploy
