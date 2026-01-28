@@ -1,6 +1,6 @@
 service: i90
 
-frameworkVersion: "^3.40.0"
+frameworkVersion: "^4.31.2"
 
 custom:
   stage: ${opt:stage, env:STAGE, "dev"}
