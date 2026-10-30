@@ -28,7 +28,7 @@ custom:
 
 provider:
   name: aws
-  runtime: python3.10
+  runtime: python3.13
   region: ${opt:region, env:REGION, "us-east-1"}
   stage: ${self:custom.stage}
   deploymentBucket:
